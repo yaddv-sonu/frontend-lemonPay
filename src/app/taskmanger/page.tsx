@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { MoreVertical, Trash2, Edit2 } from "lucide-react";
+import {  Trash2, Edit2 } from "lucide-react";
 
 interface Task {
   _id: string;
