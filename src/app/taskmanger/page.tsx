@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import {  Trash2, Edit2 } from "lucide-react";
+import { Trash2, Edit2 } from "lucide-react";
 
 interface Task {
   _id: string;
@@ -34,7 +34,7 @@ export default function TasksPage() {
   const fetchTasks = async () => {
     try {
       const res = await api.get("/tasks");
-      setTasks(res.data.data); // 'data' instead of 'tasks'
+      setTasks(res.data.data);
     } catch (err) {
       console.error("Fetch error:", err);
     }
@@ -72,7 +72,7 @@ export default function TasksPage() {
     setForm({
       taskName: task.taskName,
       description: task.description,
-      dueDate: task.dueDate.slice(0, 16), // Adjust to fit input type="datetime-local"
+      dueDate: task.dueDate.slice(0, 16),
     });
     setShowModal(true);
   };
@@ -94,8 +94,9 @@ export default function TasksPage() {
   };
 
   return (
-    <div className="p-8 bg-white ">
-      <div className="flex justify-between items-center mb-6">
+    <div className="p-4 sm:p-6 md:p-8 bg-white min-h-screen">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
         <h2 className="text-xl font-semibold text-blue-700">Tasks Management</h2>
         <button
           onClick={() => setShowModal(true)}
@@ -105,43 +106,68 @@ export default function TasksPage() {
         </button>
       </div>
 
-      <div className="bg-white shadow rounded-lg overflow-x-auto">
-        <table className="min-w-full text-sm text-left">
-          <thead className="bg-gray-100 text-gray-700">
-            <tr>
-              <th className="px-6 py-3">No</th>
-              <th className="px-6 py-3">Date & Time</th>
-              <th className="px-6 py-3">Task</th>
-              <th className="px-6 py-3">Description</th>
-              <th className="px-6 py-3 text-right">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tasks?.map((task, index) => (
-              <tr key={task._id} className="border-b hover:bg-gray-50 text-black">
-                <td className="px-6 py-4">{index + 1}</td>
-                <td className="px-6 py-4">
-                  {new Date(task.dueDate).toLocaleString()}
-                </td>
-                <td className="px-6 py-4">{task.taskName}</td>
-                <td className="px-6 py-4">{task.description}</td>
-                <td className="px-6 py-4 text-right flex justify-end gap-2 text-black">
-                  <button onClick={() => openEditModal(task)} title="Edit">
-                    <Edit2 size={16} />
-                  </button>
-                  <button onClick={() => handleDelete(task._id)} title="Delete">
-                    <Trash2 size={16} className="text-red-500" />
-                  </button>
-                </td>
+      {/* Table / Cards */}
+      <div className="bg-white shadow rounded-lg">
+        {/* Desktop Table */}
+        <div className="hidden sm:block overflow-x-auto">
+          <table className="min-w-full text-sm text-left">
+            <thead className="bg-gray-100 text-gray-700">
+              <tr>
+                <th className="px-6 py-3">No</th>
+                <th className="px-6 py-3">Date & Time</th>
+                <th className="px-6 py-3">Task</th>
+                <th className="px-6 py-3">Description</th>
+                <th className="px-6 py-3 text-right">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {tasks.map((task, index) => (
+                <tr key={task._id} className="border-b hover:bg-gray-50 text-black">
+                  <td className="px-6 py-4">{index + 1}</td>
+                  <td className="px-6 py-4">{new Date(task.dueDate).toLocaleString()}</td>
+                  <td className="px-6 py-4">{task.taskName}</td>
+                  <td className="px-6 py-4">{task.description}</td>
+                  <td className="px-6 py-4 text-right flex justify-end gap-2 text-black">
+                    <button onClick={() => openEditModal(task)} title="Edit">
+                      <Edit2 size={16} />
+                    </button>
+                    <button onClick={() => handleDelete(task._id)} title="Delete">
+                      <Trash2 size={16} className="text-red-500" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Mobile Card View */}
+        <div className="block sm:hidden space-y-4">
+          {tasks.map((task, index) => (
+            <div
+              key={task._id}
+              className="border rounded-lg p-4 shadow-sm bg-gray-50"
+            >
+              <div className="text-sm text-gray-500">{new Date(task.dueDate).toLocaleString()}</div>
+              <div className="text-lg font-semibold text-black">{task.taskName}</div>
+              <div className="text-gray-700 text-sm mt-1">{task.description}</div>
+              <div className="flex justify-end gap-4 mt-2">
+                <button onClick={() => openEditModal(task)} title="Edit">
+                  <Edit2 size={16} />
+                </button>
+                <button onClick={() => handleDelete(task._id)} title="Delete">
+                  <Trash2 size={16} className="text-red-500" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
+      {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-          <div className="bg-white rounded-lg w-full max-w-md p-8 relative shadow-lg">
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
+          <div className="bg-white rounded-lg w-full max-w-md p-6 sm:p-8 shadow-lg">
             <h2 className="text-xl font-semibold mb-4 text-center text-black">
               {editMode ? "Edit Task" : "Add Task"}
             </h2>
