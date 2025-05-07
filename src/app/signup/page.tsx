@@ -17,7 +17,6 @@ export default function Signup() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
-    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +34,6 @@ export default function Signup() {
             return;
         }
 
-        setLoading(true);
         try {
             const response = await fetch("https://backend-2-cidd.onrender.com/api/auth/signup", {
                 method: "POST",
@@ -58,9 +56,7 @@ export default function Signup() {
             }
         } catch (err: any) {
             setError("Network error or server not reachable.");
-        } finally {
-            setLoading(false);
-        }
+        } 
     };
 
 
