@@ -143,7 +143,7 @@ export default function TasksPage() {
 
         {/* Mobile Card View */}
         <div className="block sm:hidden space-y-4">
-          {tasks.map((task, index) => (
+          {tasks.map((task) => (
             <div
               key={task._id}
               className="border rounded-lg p-4 shadow-sm bg-gray-50"
