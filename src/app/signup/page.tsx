@@ -54,7 +54,7 @@ export default function Signup() {
                 setConfirmPassword("");
                 router.push("/login");
             }
-        } catch (err: any) {
+        } catch  {
             setError("Network error or server not reachable.");
         } 
     };

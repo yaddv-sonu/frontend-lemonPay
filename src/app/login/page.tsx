@@ -37,7 +37,7 @@ export default function Login() {
          localStorage.setItem("token", data.token);
          router.push("/taskmanger");
       }
-    } catch (err) {
+    } catch  {
       setLoading(false);
       setError("Something went wrong. Please try again.");
     }
