@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -104,7 +105,7 @@ export default function Login() {
                 <label className="flex items-center text-white/80 text-base">
                   <input type="checkbox" className="mr-2 accent-white" /> Remember me
                 </label>
-                <a href="/" className="text-white/80 text-base hover:underline">Sign Up</a>
+                <Link href="/" className="text-white/80 text-base hover:underline">Sign Up</Link>
               </div>
 
               {error && <p className="text-red-400 text-sm">{error}</p>}
